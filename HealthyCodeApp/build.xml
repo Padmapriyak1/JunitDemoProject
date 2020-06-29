@@ -1,0 +1,87 @@
+<project name="HealthyCodeApp" basedir="." default="main">
+
+    <property name="src.dir"     value="src"/>
+	<property name="test.dir"	 value="src/test"/>
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"     value="${build.dir}/jar"/>
+
+	
+	<target name="Print">
+		<echo message="Build file for Healthycoderapp"/>
+	</target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+    	<mkdir dir="${build.dir}/test/classes"/>
+    	<javac srcdir="${src.dir}/main" destdir="${classes.dir}" includeantruntime="false" />
+    	<javac srcdir="src/test/java" destdir="build/test/classes">
+    	<classpath>
+   			<pathelement location = "${classes.dir}" />
+    		<pathelement location  = "C:/EnggExcel/Opensource/eclipse-java-2020-03-R-win32-x86_64/eclipse/plugins/org.apache.ant_1.10.7.v20190926-0324/lib/org.junit.jupiter.api_5.6.0.v20200203-2009.jar"/> 
+    	</classpath>
+    	</javac>
+    </target>
+
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+	
+	<target name="Junit_run" depends="compile">  
+	
+	 <junit printsummary="yes" haltonfailure="no">
+				<test name="com.healthycoderapp.BMICalculatorTest.java"/> 
+			 	<classpath>
+			   			<pathelement location = "${classes.dir}" />
+			    		<pathelement location  = "C:/EnggExcel/Opensource/eclipse-java-2020-03-R-win32-x86_64/eclipse/plugins/org.apache.ant_1.10.7.v20190926-0324/lib/org.junit.jupiter.api_5.6.0.v20200203-2009.jar"/> 
+			    </classpath>
+			 
+	    </junit>  
+	    </target>  
+
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    </target>
+
+    <target name="clean-build" depends="clean,compile,jar"/>
+
+    <target name="main" depends="clean,run"/> 
+	
+</project>
+
+<!--	<junit printsummary="yes" fork="yes" haltonfailure="no" > 
+	        	<classpath>
+	        		<pathelement location = "C:/EnggExcel/Opensource/apache-ant-1.10.8-bin/apache-ant-1.10.8/lib/junit-jupiter-api-5.7.0-M1.jar" />
+	        		<pathelement location = "${classes.dir}"/>
+	        	</classpath>  -->
+
+
+ <!--  <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref = "classpath.test" /> -->
+    	 
+  	 	
+    	 	<!-- <classpath>
+    	 	        <path id="org.junit" location=C:/EnggExcel/Opensource/apache-ant-1.10.8-bin/apache-ant-1.10.8/lib/junit-jupiter-api-5.7.0-M1.jar" />
+    	 	</classpath> 
+    	 	classpath = "C:/EnggExcel/Opensource/eclipse-java-2020-03-R-win32-x86_64/eclipse/plugins/org.apache.ant_1.10.7.v20190926-0324/lib/org.junit.jupiter.api_5.6.0.v20200203-2009.jar"
+    	 	-->
+
+
+	
+    <!-- <path id = "classpath.test">
+	      <pathelement location = "/EnggExcel/Opensource/apache-ant-1.10.8-bin/apache-ant-1.10.8/lib/junit-jupiter-api-5.7.0-M1.jar" />
+	      
+	 </path> 
+	 
+	 <pathconvert property="classpathInName" refid="classpath.test" />
+		<echo>Classpath is ${classpathInName}</echo> -->
+	
